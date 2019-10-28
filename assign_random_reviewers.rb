@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "json"
-require "open-uri"
+require "net/http"
+require "uri"
 
 GITHUB_ACCESS_TOKEN = ARGV[0]
 GITHUB_ORG_NAME = ARGV[1]
@@ -14,7 +15,16 @@ GITHUB_TEAMS_URL = "https://api.github.com/orgs/#{GITHUB_ORG_NAME}/teams"
 $stdout.sync = true
 
 def download_json(url)
-  JSON.parse(URI(url + "?access_token=#{GITHUB_ACCESS_TOKEN}").read)
+  uri = URI(url + "?access_token=#{GITHUB_ACCESS_TOKEN}")
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+
+  request = Net::HTTP::Get.new(uri.request_uri)
+  request["Accept"] = "application/vnd.github.hellcat-preview+json"
+
+  response = http.request(request)
+
+  JSON.parse(response.body)
 end
 
 # Step 1: Download list of teams to find its ID
@@ -26,6 +36,18 @@ if matching_team.nil?
   puts "ERROR!"
   puts "ERROR: Unable to find matching team. Exiting."
   exit 10
+else
+  puts "done!"
+end
+
+# Step 2: Download list of members in the team
+print "=> Downloading a list of members in #{GITHUB_TEAM_NAME}... "
+members_url = matching_team["members_url"].sub(/\{.+$/, "")
+members = download_json(members_url)
+
+if members.empty?
+  puts "ERROR!"
+  puts "ERROR: Unable to find matching team. Exiting."
 else
   puts "done!"
 end
