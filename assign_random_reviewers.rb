@@ -7,7 +7,7 @@ require "uri"
 GITHUB_ACCESS_TOKEN = ARGV[0]
 GITHUB_ORG_NAME = ARGV[1]
 GITHUB_TEAM_NAME = ARGV[2]
-NUMBER_OF_REVIEWERS = ARGV[3]
+NUMBER_OF_REVIEWERS = ARGV[3].to_i
 AVOID_BUSY_REVIEWER = ARGV[4]
 GITHUB_TEAMS_URL = "https://api.github.com/orgs/#{GITHUB_ORG_NAME}/teams"
 
@@ -51,3 +51,13 @@ if members.empty?
 else
   puts "done!"
 end
+
+# Step 3: Pick random reviewer
+members.shuffle!
+reviewers = members.first(NUMBER_OF_REVIEWERS)
+
+reviewer_names = reviewers.
+                 map { |member| member["login"] }.
+                 join(", ").
+                 sub(/^(.+), (.+)$/, "\\1, and \\2")
+puts "=> Picked #{reviewer_names} as reviewers."
