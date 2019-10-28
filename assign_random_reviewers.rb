@@ -73,10 +73,12 @@ members.each do |member|
       end
     end
 
-    reviewers << member
+    reviewers << member["login"]
   end
 end
 
-reviewer_names = reviewers.map { |member| member["login"] }.join(", ")
-reviewer_names.sub!(/^(.+), (.+)$/, "\\1, and \\2")
-puts "=> Picked #{reviewer_names} as reviewers."
+reviewers_list = reviewers.join(", ").sub!(/^(.+), (.+)$/, "\\1, and \\2")
+puts "=> Picked #{reviewers_list} as reviewers."
+
+# Step 4: Return the list of reviewers for the next GitHub action
+puts "::set-output name=reviewers::#{reviewers.to_json}"

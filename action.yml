@@ -13,6 +13,9 @@ inputs:
   only_available:
     description: Make this action only assign a pull request to people who don't have busy status
     default: true
+outputs:
+  reviewers:
+    description: Comma-seperated list of GitHub usernames that are picked as reviewers
 runs:
   using: docker
   image: Dockerfile
