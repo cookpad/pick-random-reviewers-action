@@ -1,21 +1,21 @@
 name: Assign random reviewers
-description: GitHub action for assigning random reviewer from a team, written in Ruby
+description: GitHub action for picking random reviewer from a GitHub team, written in Ruby.
 inputs:
   github_access_token:
     description: Access token for reading a team list (must have `orgs:read` permission)
   organization_name:
-    description: Name of the GitHub organization which this action should look into
+    description: Name of the GitHub organization which the team belongs to
   team_name:
     description: Name of the team that their member should be picked as a reviewer
   number_of_reviewers:
-    description: Number of reviewers we should assign to a pull request
+    description: Number of reviewers we should pick
     default: 3
   only_available:
-    description: Make this action only assign a pull request to people who don't have busy status
+    description: Make this action only pick reviewers who do not have their status set to busy
     default: true
 outputs:
   reviewers:
-    description: Comma-seperated list of GitHub usernames that are picked as reviewers
+    description: A JSON array containing a list of GitHub usernames that are picked
 runs:
   using: docker
   image: Dockerfile
