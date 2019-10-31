@@ -10,10 +10,10 @@ Basic:
 
 ```yaml
 steps:
-  - id: pick-random-reviewers
+  - id: pick_random_reviewers
     uses: cookpad/pick-random-reviewers-action@v1.0.0
     with:
-      github_access_token: ${{ secrets.pick-random-reviewers-access-token }}
+      github_access_token: ${{ secrets.pick_random_reviewers_access_token }}
       organization_name: your-organization-name
       team_name: your-github-team-name
 ```
@@ -25,7 +25,7 @@ permission. You can add the access token in your repository's Settings page.
 
 This action will return an array of GitHub usernames that it picks as reviewers.
 If you use the same step id as above, you can access the output via
-`${{ steps.pick-random-reviewers.outputs.reviewers}}`.
+`${{ steps.pick_random_reviewers.outputs.reviewers}}`.
 
 ## Configuring the action
 
