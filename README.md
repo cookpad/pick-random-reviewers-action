@@ -39,7 +39,7 @@ Number of reviewers this action should return.
 number_of_reviewers: 1    # Default: 3
 ```
 
-### Return only available revieers
+### Return only available reviewers
 
 Make this action only return reviewers who do not have their status set to Busy.
 
